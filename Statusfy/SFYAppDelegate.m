@@ -61,7 +61,7 @@ static NSString * const SFYPlayerDockIconPreferenceKey = @"ShowDockIcon";
         
         if ([self getPlayerStateVisibility]) {
             NSString *playerState = [self determinePlayerStateText];
-            titleText = [NSString stringWithFormat:@"%@ (%@)", titleText, playerState];
+            titleText = [NSString stringWithFormat:@"%@ %@", playerState, titleText];
         }
         
         self.statusItem.image = nil;
@@ -114,13 +114,13 @@ static NSString * const SFYPlayerDockIconPreferenceKey = @"ShowDockIcon";
     NSString *playerStateConstant = [[self executeAppleScript:@"get player state"] stringValue];
     
     if ([playerStateConstant isEqualToString:@"kPSP"]) {
-        playerStateText = NSLocalizedString(@"Playing", nil);
+        playerStateText = NSLocalizedString(@"\u25B6", nil);
     }
     else if ([playerStateConstant isEqualToString:@"kPSp"]) {
-        playerStateText = NSLocalizedString(@"Paused", nil);
+        playerStateText = NSLocalizedString(@"❙ ❙", nil);
     }
     else {
-        playerStateText = NSLocalizedString(@"Stopped", nil);
+        playerStateText = NSLocalizedString(@"\u25FB\uFE0F", nil);
     }
     
     return playerStateText;
