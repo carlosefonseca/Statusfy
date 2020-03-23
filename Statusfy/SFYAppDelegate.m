@@ -10,7 +10,7 @@
 
 
 static NSString * const SFYPlayerStatePreferenceKey = @"ShowPlayerState";
-static NSString * const SFYPlayerDockIconPreferenceKey = @"YES";
+static NSString * const SFYPlayerDockIconPreferenceKey = @"ShowDockIcon";
 
 @interface SFYAppDelegate ()
 
@@ -25,7 +25,9 @@ static NSString * const SFYPlayerDockIconPreferenceKey = @"YES";
 - (void)applicationDidFinishLaunching:(NSNotification * __unused)aNotification
 {
     //Initialize the variable the getDockIconVisibility method checks
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:SFYPlayerDockIconPreferenceKey];
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:SFYPlayerDockIconPreferenceKey]) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:SFYPlayerDockIconPreferenceKey];
+    }
     
     self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     self.statusItem.highlightMode = YES;
@@ -44,6 +46,7 @@ static NSString * const SFYPlayerDockIconPreferenceKey = @"YES";
     
     [self setStatusItemTitle];
     [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(setStatusItemTitle) userInfo:nil repeats:YES];
+    [self applyDockIconVisibility];
 }
 
 #pragma mark - Setting title text
@@ -135,11 +138,7 @@ static NSString * const SFYPlayerDockIconPreferenceKey = @"YES";
    [[NSUserDefaults standardUserDefaults] setBool:visible forKey:SFYPlayerDockIconPreferenceKey];
 }
 
-- (void)toggleDockIconVisibility
-{
-    [self setDockIconVisibility:![self getDockIconVisibility]];
-    self.dockIconMenuItem.title = [self determineDockIconMenuItemTitle];
-    
+- (void)applyDockIconVisibility {
     if(![self getDockIconVisibility])
     {
         //Apple recommended method to show and hide dock icon
@@ -151,6 +150,14 @@ static NSString * const SFYPlayerDockIconPreferenceKey = @"YES";
         //show icon
         [NSApp setActivationPolicy: NSApplicationActivationPolicyRegular];
     }
+}
+
+- (void)toggleDockIconVisibility
+{
+    [self setDockIconVisibility:![self getDockIconVisibility]];
+    self.dockIconMenuItem.title = [self determineDockIconMenuItemTitle];
+    
+    [self applyDockIconVisibility];
 }
 
 - (NSString *)determineDockIconMenuItemTitle
