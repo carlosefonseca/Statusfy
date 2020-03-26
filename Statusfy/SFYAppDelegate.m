@@ -57,15 +57,18 @@ static NSString * const SFYPlayerDockIconPreferenceKey = @"ShowDockIcon";
     NSString *artistName = [[self executeAppleScript:@"get artist of current track"] stringValue];
     
     if (trackName && artistName) {
-        NSString *titleText = [NSString stringWithFormat:@"%@ - %@", trackName, artistName];
+        NSString *titleText = [NSString stringWithFormat:@"%@\n%@", trackName, artistName];
+                
+        NSAttributedString * attributtedTitleText = [[NSAttributedString alloc] initWithString:titleText
+                                                                                    attributes:@{
+                                                                                        NSFontAttributeName:[NSFont systemFontOfSize:10],
+                                                                                    }];
         
         if ([self getPlayerStateVisibility]) {
-            NSString *playerState = [self determinePlayerStateText];
-            titleText = [NSString stringWithFormat:@"%@ %@", playerState, titleText];
+            self.statusItem.image = [self determinePlayerStateImage];
         }
-        
-        self.statusItem.image = nil;
-        self.statusItem.title = titleText;
+
+        self.statusItem.attributedTitle = attributtedTitleText;
     }
     else {
         NSImage *image = [NSImage imageNamed:@"status_icon"];
@@ -108,22 +111,17 @@ static NSString * const SFYPlayerDockIconPreferenceKey = @"ShowDockIcon";
     return [self getPlayerStateVisibility] ? NSLocalizedString(@"Hide Player State", nil) : NSLocalizedString(@"Show Player State", nil);
 }
 
-- (NSString *)determinePlayerStateText
-{
-    NSString *playerStateText = nil;
+- (NSImage *)determinePlayerStateImage {
     NSString *playerStateConstant = [[self executeAppleScript:@"get player state"] stringValue];
-    
     if ([playerStateConstant isEqualToString:@"kPSP"]) {
-        playerStateText = NSLocalizedString(@"\u25B6", nil);
+        return [NSImage imageNamed:@"Play"];
     }
     else if ([playerStateConstant isEqualToString:@"kPSp"]) {
-        playerStateText = NSLocalizedString(@"❙ ❙", nil);
+        return [NSImage imageNamed:@"Pause"];
     }
     else {
-        playerStateText = NSLocalizedString(@"\u25FB\uFE0F", nil);
+        return nil;
     }
-    
-    return playerStateText;
 }
 
 #pragma mark - Toggle Dock Icon
