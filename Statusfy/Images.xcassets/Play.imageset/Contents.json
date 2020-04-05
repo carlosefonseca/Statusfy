@@ -3,6 +3,16 @@
     {
       "filename" : "Play_1.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Play 2.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
