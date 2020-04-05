@@ -36,6 +36,14 @@ import Cocoa
         }
     }()
     
+    lazy var highlightedAttrs: [NSAttributedString.Key: Any] = {
+        [
+            .font: NSFont.systemFont(ofSize: 10),
+            .foregroundColor: NSColor.white,
+            .paragraphStyle: self.paragraph
+        ]
+    }()
+    
     var line1: String = "" {
         willSet(newValue) {
             if line1 != newValue {
@@ -70,6 +78,12 @@ import Cocoa
                     image = nil
                 }
             }
+        }
+    }
+    
+    var isHighlighted: Bool = false {
+        didSet {
+            setNeedsDisplay(bounds)
         }
     }
     
@@ -108,26 +122,39 @@ import Cocoa
     }
     
     public override func draw(_ dirtyRect: NSRect) {
-        // print("draw \(line1) \(line2) \(state.rawValue)")
+        statusItem.drawStatusBarBackground(in: dirtyRect, withHighlight: isHighlighted)
         
-        image?.draw(in: NSRect(x: 0, y: 0, width: image!.size.width, height: image!.size.height))
+        if image != nil, isHighlighted, UserDefaults.standard.string(forKey: "AppleInterfaceStyle") != "Dark" {
+            let image = NSImage(named: "\(self.image!.name()!)-Highlighted")!
+            image.draw(in: NSRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
+        } else {
+            image?.draw(in: NSRect(x: 0, y: 0, width: image!.size.width, height: image!.size.height))
+        }
         
         let imgWidth = image?.size.width ?? 0.0
         
-        let line1 = CGRect(x: imgWidth,
-                           y: dirtyRect.height / 2,
-                           width: dirtyRect.width - imgWidth,
-                           height: dirtyRect.height / 2 + 1)
-        let line2 = CGRect(x: imgWidth,
-                           y: 0,
-                           width: line1.width,
-                           height: dirtyRect.height / 2 + 1)
+        let line1Rect = CGRect(x: imgWidth,
+                               y: dirtyRect.height / 2,
+                               width: dirtyRect.width - imgWidth,
+                               height: dirtyRect.height / 2 + 1)
         
-        line1attr.draw(in: line1)
-        line2attr.draw(in: line2)
+        let line2Rect = CGRect(x: imgWidth,
+                               y: 0,
+                               width: line1Rect.width,
+                               height: dirtyRect.height / 2 + 1)
+        
+        if isHighlighted {
+            NSAttributedString(string: line1, attributes: highlightedAttrs).draw(in: line1Rect)
+            NSAttributedString(string: line2, attributes: highlightedAttrs).draw(in: line2Rect)
+        } else {
+            line1attr.draw(in: line1Rect)
+            line2attr.draw(in: line2Rect)
+        }
     }
     
     public override func mouseDown(with event: NSEvent) {
+        isHighlighted = true
         statusItem.popUpMenu(statusItem.menu!)
+        isHighlighted = false
     }
 }
