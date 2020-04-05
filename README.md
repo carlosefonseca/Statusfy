@@ -1,10 +1,10 @@
 Statusfy
 ========
 
-<img src="https://d13yacurqjgara.cloudfront.net/users/6536/screenshots/1532570/statusfy.png" alt="Icon" width="400" height="300" />
+<img src="https://raw.github.com/carlosefonseca/Statusfy/master/Statusfy/Images.xcassets/AppIcon.appiconset/icon_256x256@2x.png" alt="Icon" width="256px" height="256px" />
 
 Spotify in your status bar.
 
-<img src="https://raw.github.com/paulyoung/Statusfy/master/screenshot.png" alt="Screenshot" width="439" height="67" />
+<img src="https://raw.github.com/carlosefonseca/Statusfy/master/screenshot.png" alt="Screenshot" width="439" height="67" />
 
-[Download](https://github.com/paulyoung/Statusfy/releases)
+[Download](https://github.com/carlosefonseca/Statusfy/releases)
