@@ -20,6 +20,7 @@
 		2C87977018FF06E700AE2A45 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C87974F18FF06E600AE2A45 /* Cocoa.framework */; };
 		2C87977818FF06E700AE2A45 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2C87977618FF06E700AE2A45 /* InfoPlist.strings */; };
 		2C87977A18FF06E700AE2A45 /* StatusfyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C87977918FF06E700AE2A45 /* StatusfyTests.m */; };
+		2D97CF4C2439F4B9002DA0AA /* StatusItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D97CF4B2439F4B9002DA0AA /* StatusItemView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,8 @@
 		2C87977518FF06E700AE2A45 /* StatusfyTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "StatusfyTests-Info.plist"; sourceTree = "<group>"; };
 		2C87977718FF06E700AE2A45 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		2C87977918FF06E700AE2A45 /* StatusfyTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StatusfyTests.m; sourceTree = "<group>"; };
+		2D97CF4A2439F4B9002DA0AA /* Statusfy-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Statusfy-Bridging-Header.h"; sourceTree = "<group>"; };
+		2D97CF4B2439F4B9002DA0AA /* StatusItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +127,8 @@
 				2C87976418FF06E600AE2A45 /* MainMenu.xib */,
 				2C87976718FF06E600AE2A45 /* Images.xcassets */,
 				2C87975618FF06E600AE2A45 /* Supporting Files */,
+				2D97CF4B2439F4B9002DA0AA /* StatusItemView.swift */,
+				2D97CF4A2439F4B9002DA0AA /* Statusfy-Bridging-Header.h */,
 			);
 			path = Statusfy;
 			sourceTree = "<group>";
@@ -210,6 +215,7 @@
 				TargetAttributes = {
 					2C87974B18FF06E600AE2A45 = {
 						DevelopmentTeam = VF8BTMF3F4;
+						LastSwiftMigration = 1140;
 						ProvisioningStyle = Automatic;
 					};
 					2C87976C18FF06E600AE2A45 = {
@@ -266,6 +272,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D97CF4C2439F4B9002DA0AA /* StatusItemView.swift in Sources */,
 				2C87975C18FF06E600AE2A45 /* main.m in Sources */,
 				2C87976318FF06E600AE2A45 /* SFYAppDelegate.m in Sources */,
 			);
@@ -438,6 +445,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -445,11 +453,15 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Statusfy/Statusfy-Prefix.pch";
 				INFOPLIST_FILE = "Statusfy/Statusfy-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MARKETING_VERSION = 1.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.carlosefonseca.Statusfy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Statusfy/Statusfy-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -458,6 +470,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -465,11 +478,14 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Statusfy/Statusfy-Prefix.pch";
 				INFOPLIST_FILE = "Statusfy/Statusfy-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MARKETING_VERSION = 1.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.carlosefonseca.Statusfy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Statusfy/Statusfy-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -477,6 +493,7 @@
 		2C87978118FF06E700AE2A45 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Statusfy.app/Contents/MacOS/Statusfy";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -500,6 +517,7 @@
 		2C87978218FF06E700AE2A45 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Statusfy.app/Contents/MacOS/Statusfy";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (

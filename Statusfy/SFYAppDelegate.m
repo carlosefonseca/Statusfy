@@ -7,6 +7,7 @@
 //
 
 #import "SFYAppDelegate.h"
+#import "Statusfy-Swift.h"
 
 
 static NSString * const SFYPlayerStatePreferenceKey = @"ShowPlayerState";
@@ -17,6 +18,7 @@ static NSString * const SFYPlayerDockIconPreferenceKey = @"ShowDockIcon";
 @property (nonatomic, strong) NSMenuItem *playerStateMenuItem;
 @property (nonatomic, strong) NSMenuItem *dockIconMenuItem;
 @property (nonatomic, strong) NSStatusItem *statusItem;
+@property (nonatomic, strong) StatusItemView *customView;
 
 @end
 
@@ -31,6 +33,8 @@ static NSString * const SFYPlayerDockIconPreferenceKey = @"ShowDockIcon";
     
     self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     self.statusItem.highlightMode = YES;
+    self.statusItem.behavior = NSStatusItemBehaviorRemovalAllowed | NSStatusItemBehaviorTerminationOnRemoval;
+    self.statusItem.visible = YES;
     
     NSMenu *menu = [[NSMenu alloc] initWithTitle:@""];
     
@@ -44,6 +48,8 @@ static NSString * const SFYPlayerDockIconPreferenceKey = @"ShowDockIcon";
 
     [self.statusItem setMenu:menu];
     
+    self.customView = [StatusItemView newWithStatusItem:self.statusItem];
+
     [self setStatusItemTitle];
     [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(setStatusItemTitle) userInfo:nil repeats:YES];
     [self applyDockIconVisibility];
@@ -57,18 +63,7 @@ static NSString * const SFYPlayerDockIconPreferenceKey = @"ShowDockIcon";
     NSString *artistName = [[self executeAppleScript:@"get artist of current track"] stringValue];
     
     if (trackName && artistName) {
-        NSString *titleText = [NSString stringWithFormat:@"%@\n%@", trackName, artistName];
-                
-        NSAttributedString * attributtedTitleText = [[NSAttributedString alloc] initWithString:titleText
-                                                                                    attributes:@{
-                                                                                        NSFontAttributeName:[NSFont systemFontOfSize:10],
-                                                                                    }];
-        
-        if ([self getPlayerStateVisibility]) {
-            self.statusItem.image = [self determinePlayerStateImage];
-        }
-
-        self.statusItem.attributedTitle = attributtedTitleText;
+        [self.customView updateWithLine1:trackName line2:artistName state:[self determinePlayerState]];
     }
     else {
         NSImage *image = [NSImage imageNamed:@"status_icon"];
@@ -111,16 +106,20 @@ static NSString * const SFYPlayerDockIconPreferenceKey = @"ShowDockIcon";
     return [self getPlayerStateVisibility] ? NSLocalizedString(@"Hide Player State", nil) : NSLocalizedString(@"Show Player State", nil);
 }
 
-- (NSImage *)determinePlayerStateImage {
+- (PlayerState)determinePlayerState {
+    if (![self getPlayerStateVisibility]) {
+        return PlayerStateHidden;
+    }
+    
     NSString *playerStateConstant = [[self executeAppleScript:@"get player state"] stringValue];
     if ([playerStateConstant isEqualToString:@"kPSP"]) {
-        return [NSImage imageNamed:@"Play"];
+        return PlayerStatePlaying;
     }
     else if ([playerStateConstant isEqualToString:@"kPSp"]) {
-        return [NSImage imageNamed:@"Pause"];
+        return PlayerStatePaused;
     }
     else {
-        return nil;
+        return PlayerStateOther;
     }
 }
 
