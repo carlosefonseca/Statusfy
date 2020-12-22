@@ -59,18 +59,12 @@ static NSString * const SFYPlayerDockIconPreferenceKey = @"ShowDockIcon";
 
 - (void)setStatusItemTitle
 {
-    NSString *trackName = [[self executeAppleScript:@"get name of current track"] stringValue];
-    NSString *artistName = [[self executeAppleScript:@"get artist of current track"] stringValue];
-    
-    if (trackName && artistName) {
-        [self.customView updateWithLine1:trackName line2:artistName state:[self determinePlayerState]];
-    }
-    else {
-        NSImage *image = [NSImage imageNamed:@"status_icon"];
-        [image setTemplate:true];
-        self.statusItem.image = image;
-        self.statusItem.title = nil;
-    }
+    NSArray<NSString *> *trackArtist = [[[self executeAppleScript:@"(get name of current track) & \"\n\" & (get artist of current track)"] stringValue] componentsSeparatedByString:@"\n"];
+
+    NSString *trackName = trackArtist[0];
+    NSString *artistName = trackArtist[1];
+
+    [self.customView updateWithLine1:trackName line2:artistName state:[self determinePlayerState]];
 }
 
 #pragma mark - Executing AppleScript
